@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Fragment } from 'react/cjs/react.production.min';
 
 
 const Stopwatch = () => {
@@ -11,7 +12,7 @@ const Stopwatch = () => {
     setIsActive(true)
     setIsPaused(true)
     increment.current = setInterval(() => {
-      setTimer((timer) => timer + 1)
+      setTimer((prev) => prev + 1)
     }, 1000)
   }
 
@@ -23,7 +24,7 @@ const Stopwatch = () => {
   const handleResume = () => {
     setIsPaused(true)
     increment.current = setInterval(() => {
-      setTimer((timer) => timer + 1)
+      setTimer((prev) => prev + 1)
     }, 1000)
   }
 
@@ -52,10 +53,12 @@ const Stopwatch = () => {
           {
             !isActive && !isPaused ?
               <button data-testid="start" onClick={handleStart}>Start</button>
-              : (
-                isPaused ? <button data-testid="pause"onClick={handlePause}>Pause</button> :
+              : 
+                isPaused ? <>
+                    <button data-testid="pause" onClick={()=> handlePause()}>Pause</button> :
                   <button onClick={handleResume}>Resume</button>
-              )
+                </> :""
+              
           }
           <button data-testid="reset"  onClick={handleReset}disabled={!isActive} >Reset</button>
         </div>
